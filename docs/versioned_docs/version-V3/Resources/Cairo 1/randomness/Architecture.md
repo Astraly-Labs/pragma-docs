@@ -6,15 +6,16 @@ sidebar_position: 1
 
 ---
 
-Pragma Network offers a verifiable randomness feed that allows protocols to request secure randomness on-chain.
-This feed is being rolled out in two phases: In the first phase (currently live) the randomness proof is posted as calldata, allowing anyone to verify it off-chain. See below for more details on how to verify the randomness. This first phase is limited to testnet, and there is no charge for randomness.
+Pragma offers a verifiable randomness feed that allows protocols to request secure randomness on-chain.
+This feed is being rolled out in two phases: In the first phase (currently live) the randomness proof is posted as calldata, allowing anyone to verify it off-chain. See below for more details on how to verify the randomness.
+
 In the second phase, the proof will be verified directly on-chain (coming soon) and requesters will be required to cover gas costs of their callback function plus a small fee to cover the cost of generating randomness.
 
 ## Sample Code
 
 If you are just trying to get started with using randomness, see the self-contained code snippet. If you'd like to use more advanced oracle functions, read on past the code block for further information. You can find a full sample randomness receiver contract [here](https://github.com/astraly-labs/pragma-oracle/blob/main/src/randomness/example_randomness.cairo).
 
-```bash
+```rust
 #[starknet::contract]
 mod ExampleRandomness {
     use super::{ContractAddress, IExampleRandomness};
@@ -118,8 +119,8 @@ As mentioned above, in the first phase of Pragma Network's VRF feed, the randomn
 
 In order to make it easier to verify that a specific piece of randomness was verifiable, we provide an open source implementation of the verifier. Follow these simple steps to verify any randomness provided by Pragma Network:
 
-1. Install the Pragma Python package `pip install empiric-network `
-2. Run `python3 -m empiric.cli random verify-random <TRANSACTION\*HASH>` where `TRANSACTION_HASH` is the hash of the StarkNet testnet transaction in which the randomness was submitted to your smart contract.
+1. Install the Pragma Python package `pip install pragma-sdk`
+2. Run `python3 -m pragma-sdl.cli random verify-random <TRANSACTION\*HASH>` where `TRANSACTION_HASH` is the hash of the StarkNet testnet transaction in which the randomness was submitted to your smart contract.
 
 ## Technical Specification
 
