@@ -15,9 +15,9 @@ In the second phase, the proof will be verified directly on-chain (coming soon) 
 
 You can find the latest deployed contracts at the following addresses :
 
-[Testnet](https://goerli.voyager.online/contract/0xx) : 0x
+[Testnet](https://goerli.voyager.online/contract/0x693d551265f0be7ccb3c869c64b5920929caaf486497788d43cb37dd17d6be6) : 0x693d551265f0be7ccb3c869c64b5920929caaf486497788d43cb37dd17d6be6
 
-[Mainnet](https://voyager.online/contract/0x) : 0x
+[Mainnet](https://voyager.online/contract/0x) : 🔜
 
 ## Sample Code
 
@@ -59,6 +59,7 @@ mod ExampleRandomness {
             num_words: u64
         ) {
             let randomness_contract_address = self.randomness_contract_address.read();
+
             let randomness_dispatcher = IRandomnessDispatcher {
                 contract_address: randomness_contract_address
             };
@@ -68,6 +69,7 @@ mod ExampleRandomness {
                 );
 
             let current_block_number = get_block_number();
+            
             self.min_block_number_storage.write(current_block_number + publish_delay);
 
             return ();
