@@ -28,3 +28,5 @@ Pragma routinely uses this function to create checkpoints for frequently used cu
 | BTC/USD      | 18669995996566340     | 8        | ✅      |
 | ETH/USD      | 19514442401534788     | 8        | ✅      |
 | USDC/USD      | 6148332971638477636     | 8        | ✅      |
+
+Currently, the checkpoints are set every Tuesdays at 00:00 UTC for [Carmine Options](https://github.com/CarmineOptions/keeper-bot)
