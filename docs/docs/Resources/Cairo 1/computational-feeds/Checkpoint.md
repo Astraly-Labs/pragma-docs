@@ -15,7 +15,7 @@ Checkpoints, in computer science, are mechanisms that capture and save the state
 
 ## Implementing Checkpoints in Pragma
 
-Within the oracle contract, there's a function named set_checkpoint accessible to anyone. This function focuses on a specific currency pair. Upon activation, it logs the price information of the selected pair at the moment the function is called, saving this data in a designated storage area.
+Within the oracle contract, there's a function named `set_checkpoints` accessible to anyone. This function focuses on a specific currency pair. Upon activation, it logs the price information of the selected pair at the moment the function is called, saving this data in a designated storage area.
 
 ## User Interaction and Autonomy
 
