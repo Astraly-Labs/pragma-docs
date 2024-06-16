@@ -26,7 +26,7 @@ By default, no asset pairs are subscribed. To subscribe to specific pairs, send 
 
 ```json
 {
-  "type": "subscribe",
+  "msg_type": "subscribe",
   "pairs": ["BTC/USD", "ETH/USD:MARK"]
 }
 ```
@@ -35,7 +35,7 @@ The server will confirm your subscription with a response like this:
 
 ```json
 {
-  "type": "subscribe",
+  "msg_type": "subscribe",
   // the pairs you are currently subscribed to, here we were already
   // subscribed to SOL/USD
   "pairs": ["BTC/USD", "ETH/USD:MARK", "SOL/USD"]
@@ -74,7 +74,7 @@ To unsubscribe from specific pairs, send a message formatted as follows:
 
 ```json
 {
-  "type": "unsubscribe",
+  "msg_type": "unsubscribe",
   "pairs": ["BTC/USD"]
 }
 ```
@@ -83,7 +83,7 @@ The server will confirm your unsubscription with a response like this:
 
 ```json
 {
-  "type": "unsubscribe",
+  "msg_type": "unsubscribe",
   // the pairs you are currently subscribed to
   "pairs": ["ETH/USD:MARK"]
 }
@@ -119,12 +119,77 @@ Subscribed data will be provided in the following JSON format for each asset pai
 
 **Field Descriptions**:
 
-- `global_asset_id`: Unique identifier for the asset.
+- `global_asset_id`: Unique identifier for the asset encoded using the pair name.
 - `median_price`: The median price of the asset.
 - `signature`: Signature of the median price by the Pragma oracle.
 - `signed_prices`: Array of the prices used to compute the median price:
-  - `oracle_asset_id`: Unique identifier from the oracle.
+  - `oracle_asset_id`: Unique identifier encoded using the pair and the publisher names.
   - `oracle_price`: Price provided by the oracle.
   - `signing_key`: Key used by the oracle to sign the price.
   - `timestamp`: Time when the price was recorded.
   - `signature`: Signature of the price by our publisher.
+
+## Example
+
+You can use the following Python code to connect to the Pragma websocket endpoint and subscribe to the TIA/USD index price:
+
+```python
+import asyncio
+import websockets
+import json
+from websockets.exceptions import ConnectionClosedError
+
+PRAGMA_ABI_BASE_URL = "pragma-api-url-here.dev"
+URI = f"node/v1/data/subscribe"
+WS_URL = f"ws://{PRAGMA_ABI_BASE_URL}/${URI}"
+
+SUBSCRIBE_MESSAGE = {"msg_type": "subscribe", "pairs": ["TIA/USD"]}
+
+
+async def connect_to_websocket(uri):
+    """Establish a connection to the websocket server."""
+    try:
+        websocket = await websockets.connect(uri)
+        return websocket
+    except Exception as e:
+        print(f"Failed to connect to websocket: {e}")
+        return None
+
+async def subscribe_to_data(websocket, subscribe_message):
+    """Send subscription message to the websocket."""
+    try:
+        await websocket.send(json.dumps(subscribe_message))
+        print("Subscription message sent")
+    except Exception as e:
+        print(f"Failed to send subscription message: {e}")
+
+async def handle_messages(websocket):
+    """Handle incoming messages from the websocket."""
+    try:
+        async for message in websocket:
+            print(f"Received message: {message}")
+    except ConnectionClosedError:
+        print("Connection closed")
+    except Exception as e:
+        print(f"Error receiving message: {e}")
+
+async def consume_data(uri, subscribe_message):
+    """Main function to consume data from websocket."""
+    websocket = await connect_to_websocket(uri)
+    if websocket:
+        await subscribe_to_data(websocket, subscribe_message)
+        await handle_messages(websocket)
+        await websocket.close()
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(consume_data(URI, SUBSCRIBE_MESSAGE))
+    except KeyboardInterrupt:
+        print("Program interrupted")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+```
+
+Replace `PRAGMA_BASE_API_URL` with the base URL of the Pragma API.
+
+You can also use `curl` or any other websocket client to subscribe to the Pragma websocket endpoint.
