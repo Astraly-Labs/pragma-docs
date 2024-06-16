@@ -14,10 +14,10 @@ For detailed information on supported assets, please refer to our [Supported Ass
 
 To access our API, you need to request an API key from us. Please contact our support team to obtain your unique API key.
 
-Once you have your API key, include it in the **Authorization** header of your API requests as follows:
+Once you have your API key, include it in the **X-API-KEY** header of your API requests as follows:
 
 ```http
-Authorization: Bearer YOUR_API_KEY
+X-API-KEY: YOUR_API_KEY
 ```
 
 Ensure that your API key is kept secure and not shared publicly. If you believe your API key has been compromised, please contact us immediately for a replacement.
@@ -151,9 +151,9 @@ import websockets
 import json
 from websockets.exceptions import ConnectionClosedError
 
-PRAGMA_ABI_BASE_URL = "pragma-api-url-here.dev"
+PRAGMA_API_BASE_URL = "ws.dev.pragma.build"
 URI = f"node/v1/data/subscribe"
-WS_URL = f"ws://{PRAGMA_ABI_BASE_URL}/${URI}"
+WS_URL = f"ws://{PRAGMA_API_BASE_URL}/${URI}"
 
 SUBSCRIBE_MESSAGE = {"msg_type": "subscribe", "pairs": ["TIA/USD"]}
 
@@ -202,6 +202,6 @@ if __name__ == "__main__":
         print(f"An error occurred: {e}")
 ```
 
-Replace `PRAGMA_BASE_API_URL` with the base URL of the Pragma API.
+Replace `PRAGMA_API_BASE_URL` with the base URL of the Pragma API.
 
 You can also use `curl` or any other websocket client to subscribe to the Pragma websocket endpoint.
