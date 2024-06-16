@@ -97,18 +97,21 @@ Subscribed data will be provided in the following JSON format for each asset pai
 {
   "global_asset_id": "0x12345",
   "median_price": "10000000000000001",
+  "signature": "0x154786876ae878",
   "signed_prices": [
     {
       "oracle_asset_id": "0x12345000000000ABCDEF",
       "oracle_price": "1000000000000000000",
       "signing_key": "0x1234567890ABCDEF",
-      "timestamp": "1234567"
+      "timestamp": "1234567",
+      "signature": "0x1234567890ABCDEF"
     },
     {
       "oracle_asset_id": "0x12345000000000FEDCBA",
       "oracle_price": "1000000000000000002",
       "signing_key": "0xFEDCBA0987654321",
-      "timestamp": "1234567"
+      "timestamp": "1234567",
+      "signature": "0x1234567890ABCDEF"
     }
   ]
 }
@@ -118,8 +121,10 @@ Subscribed data will be provided in the following JSON format for each asset pai
 
 - `global_asset_id`: Unique identifier for the asset.
 - `median_price`: The median price of the asset.
-- `signed_prices`: Array of price details from different oracles:
+- `signature`: Signature of the median price by the Pragma oracle.
+- `signed_prices`: Array of the prices used to compute the median price:
   - `oracle_asset_id`: Unique identifier from the oracle.
   - `oracle_price`: Price provided by the oracle.
   - `signing_key`: Key used by the oracle to sign the price.
   - `timestamp`: Time when the price was recorded.
+  - `signature`: Signature of the price by our publisher.
