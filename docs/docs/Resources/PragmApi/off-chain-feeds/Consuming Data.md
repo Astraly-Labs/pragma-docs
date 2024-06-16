@@ -1,14 +1,14 @@
 ---
 id: consume-off-data
-title: Consuming Off-Chain Data
-sidebar_position: 3
+title: Consuming Data
+sidebar_position: 1
 ---
 
 # Consuming Off-Chain Data
 
 Pragma provides a websocket endpoint for accessing real-time off-chain data, crucial for developing decentralized applications (dApps) that require continuous updates. This off-chain data can be later published to compatible blockchains, such as [StarkEx](https://starkware.co/starkex/), for verification.
 
-For detailed information on supported assets, please refer to our [Supported Assets](./Supported%20Assets.md) page.
+For detailed information on supported assets, please refer to our [Supported Assets](./supported-assets) page.
 
 ## Authentication
 
