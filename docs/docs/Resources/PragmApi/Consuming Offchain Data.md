@@ -10,6 +10,18 @@ Pragma provides a websocket endpoint for accessing real-time off-chain data, cru
 
 For detailed information on supported assets, please refer to our [Supported Assets](./Supported%20Assets.md) page.
 
+## Authentication
+
+To access our API, you need to request an API key from us. Please contact our support team to obtain your unique API key.
+
+Once you have your API key, include it in the **Authorization** header of your API requests as follows:
+
+```http
+Authorization: Bearer YOUR_API_KEY
+```
+
+Ensure that your API key is kept secure and not shared publicly. If you believe your API key has been compromised, please contact us immediately for a replacement.
+
 ## Connection
 
 To start consuming data, connect to the **PragmAPI** websocket endpoint:
