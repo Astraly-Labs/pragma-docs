@@ -43,7 +43,7 @@ Two ERC20, with minting/burning rights are created. The prediction market has th
 ## Returns 
 - `market_id` - the market id associated to the market just created.
 
-#### `*assert_market` 
+#### `assert_market` 
 
 Function used to assert a market with three outcome: outcome1, outcome2 or unresolvable. First checks of the market exist by verifying the outcome1 token address is not null. Then makes sure that the asserted outcome id is null (the assertion is not active or resolved if the asserted outcome id is null). Using poseidon hash, sets the asserted_outcome_id and fetches the required bond to make the assertion. If the market bond is higher than the minimum bond, this one is used instead. Finally, creates the claim, transfer the bond from the caller address to the prediction market, approves this bond for the oo and initiates the `assert_truth_with_defaults` function. 
 
@@ -72,7 +72,7 @@ Function used to burn an equal amount of `outcome1_token` and `outcome2_token` f
 - `market_id` - unique identifier for the market 
 - `tokens_to_redeem` - number of tokens of each outcome to be redeemed (the total number of tokens redeemed will be twice this value)
 
-### settle_outcome_tokens
+### `settle_outcome_tokens`
 
 Function used to settle outcome tokens for a given market and receive a payout in the settlement currency. The payout depends on the resolved market outcome and the number of tokens burned for each outcome. The function first retrieves the Market data and checks if the market has been resolved. It then determines the caller's balance of `outcome1_token` and `outcome2_token`. The payout is calculated based on the resolved market outcome and the number of tokens burned for each outcome. Finally, it burns the caller's outcome tokens and transfers the calculated payout to the caller's account.
 If resolved to outcome1: payout = outcome1_token_balance  
