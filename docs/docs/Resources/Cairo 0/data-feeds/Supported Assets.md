@@ -42,8 +42,6 @@ The `pair_id` is calculated by utf-8 encoding the uppercased string (e.g. `str_t
 | TUSD/USD | 6076854824523354948 | 8        | ✖️      |
 | BUSD/USD | 4779818131840652100 | 8        | ✖️      |
 
-
-
 ## Currencies & Rebasing
 
 If you want the price of one asset that Pragma lists in the price of another asset also listed (e.g. the price of BTC/ETH), you can simply get the result by calling the `get_spot_with_USD_hop` or `get_spot_with_hops` endpoint. In that case, the result will have as many decimals as the base asset you are requesting, e.g. for BTC/ETH it would be 18 decimals because the base unit of ETH is wei where 10^18 wei = 1 ETH.
