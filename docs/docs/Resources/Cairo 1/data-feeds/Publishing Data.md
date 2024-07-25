@@ -117,7 +117,7 @@ def fetch_entries(pairs: List[Pair], *args, **kwargs) -> List[Entry]:
 
 async def publish_all(pairs: List[Pair]):
     # We get the keystore password and address of the account deployed in step 1.
-    keystore_password = int(os.environ.get("PUBLISHER_KEYSTORE_PAD"), 0)
+    keystore_password = int(os.environ.get("PUBLISHER_KEYSTORE_PASSWORD"), 0)
     publisher_address = int(os.environ.get("PUBLISHER_ADDRESS"), 0)
 
     publisher_client = PragmaOnChainClient(
