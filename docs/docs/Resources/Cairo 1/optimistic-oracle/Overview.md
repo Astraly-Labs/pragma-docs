@@ -4,6 +4,12 @@ title: Optimistic Oracle
 sidebar_position: 1
 ---
 
+:::caution Under Development
+
+This feature is currently under development. Content may be incomplete or subject to change.
+
+:::
+
 An optimistic oracle is a decentralized mechanism in blockchain and Web3 systems that enables rapid inclusion of off-chain data or computation results on-chain without immediate verification. It operates on the principle of "optimistic" trust, assuming submitted data is correct unless challenged within a specified timeframe. If unchallenged, the data is considered valid; if disputed, it undergoes a verification process.
 
 This approach significantly reduces the latency and cost associated with bringing external information on-chain, as it only requires full verification in cases of disagreement.

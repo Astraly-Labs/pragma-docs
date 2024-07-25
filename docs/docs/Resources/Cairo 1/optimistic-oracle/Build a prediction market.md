@@ -4,6 +4,13 @@ title: Build a Prediction Market
 sidebar_position: 3
 ---
 
+
+:::caution Under Development
+
+This feature is currently under development. Content may be incomplete or subject to change.
+
+:::
+
 As a use case for Pragma's Optimistic Oracle, we've built a [binary prediction market](https://github.com/astraly-labs/Optimistic-Oracle/blob/main/optimistic_oracle/src/examples/prediction_market.cairo) that can serve as an example. Let's detail the different functions implemented in this contract.
 
 ## General Presentation
