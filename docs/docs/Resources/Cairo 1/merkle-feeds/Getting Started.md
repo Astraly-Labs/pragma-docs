@@ -57,14 +57,12 @@ use pragma_lib::abi::{
 };
 
 const SUMMARY_STATS_ADDRESS : ContractAddress  = 0x00000000000000000000;
-const OPTIONS_FEED_ID: felt252 = 'DERIBIT_OPTIONS';
 
 fn update_options_feed_data(data: OptionsFeedData, proof: Span<felt252>) {
     let summary_dispatcher = ISummaryStatsABIDispatcher {   
         contract_address: SUMMARY_STATS_ADDRESS
     };
-    summary_dispatcher.update_merkle_feed_data(
-        OPTIONS_FEED_ID,
+    summary_dispatcher.update_options_data(
         data,
         proof,
     );
