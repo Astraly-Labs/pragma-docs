@@ -6,8 +6,9 @@ sidebar_position: 1
 
 ---
 
-The Pragma Consumer SDK is a powerful tool that allows developers to interact with Pragma's Merkle Feed system.
+Built in collaboration with [DOPP](https://www.dopp.finance/). Merkle feeds are the most efficient way to get complex financial instruments updated on-demand on Starknet.
 
+The Pragma Consumer SDK is a powerful tool that allows developers to interact with Pragma's Merkle Feed system.
 This SDK enables you to fetch option prices and their associated Merkle proofs, which you can then use with the Pragma Oracle contract to access on-chain data.
 
 ## A Merkle Feed?
@@ -18,7 +19,6 @@ A Merkle Feed is an efficient way to publish and verify large amounts of data on
 
 *[Placeholder for an image explaining the Merkle Feed architecture]*
 
-1. Pragma publishes a Merkle root on-chain containing option prices.
-2. Users use the Consumer SDK to request specific price data.
-3. The SDK fetches the data and provides a Merkle proof.
-4. Users can verify this data on-chain using the Pragma Oracle contract.
+1. Merkle roots are pushed on-chain by Pragma *every* block. The merkle trees are built with data from [Deribit](https://www.deribit.com/) the leading platform for options trading.
+2. Data and merkle proofs can be retrieved through REST and WebSocket endpoints or through a rust crate we provide.
+3. Data is updated on-demand on-chain upon successful verification of the merkle proof.
