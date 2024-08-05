@@ -25,11 +25,15 @@ pragma-consumer = "0.1.0"
 ### 2. Initialize the Consumer in your code:
 
 ```rust
+let api_config = ApiConfig {
+    base_url: PragmaBaseUrl::Prod,
+    api_key: "your_api_key".into(),
+};
+
 let consumer = PragmaConsumerBuilder::new()
     .on_mainnet()
     .with_http(api_config)
-    .await
-    .unwrap();
+    .await?;
 ```
 
 ### 3. Fetch Merkle Feed data
@@ -38,8 +42,7 @@ let consumer = PragmaConsumerBuilder::new()
 let instrument = instrument!("BTC-16AUG24-52000-P");
 let result = consumer
     .get_merkle_feed_calldata(&instrument, None)
-    .await
-    .unwrap();
+    .await?;
 ```
 
 ### 4. Use the returned data with the Pragma Oracle contract.
@@ -48,6 +51,7 @@ TODO.
 
 ## Next steps
 
-Check out our examples to see the SDK in action and learn more about integrating Pragma's Merkle Feeds into your project.
-For more detailed technical information, please refer to our full documentation.
+Check out our [examples](https://github.com/astraly-labs/pragma-node/tree/main/pragma-consumer/examples) to see the SDK in action and learn more about integrating Pragma's Merkle Feeds into your project.
+
+For more detailed technical information, please refer to our [full documentation](https://github.com/astraly-labs/pragma-node/tree/main/pragma-consumer).
 
