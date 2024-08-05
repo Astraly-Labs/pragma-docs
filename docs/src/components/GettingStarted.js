@@ -32,7 +32,7 @@ const productList = [
     title: "Optimistic Oracle",
     description: "A secure dispute arbitration system bringing any data on-chain for DeFi, prediction markets, and more.",
     button: "integrate now",
-    link: "/Resources/Cairo%201/randomness/randomness",
+    link: "/Resources/Cairo%201/optimistic-oracle/overview",
   },
   {
     title: "Merkle Feeds",
