@@ -14,7 +14,7 @@ sidebar_position: 2
 
 To start using the Pragma Consumer SDK in your Rust project:
 
-### 1. Add the SDK to your Cargo.toml:
+### 1. Add the SDK to your Cargo.toml:
 
 ```toml
 [dependencies]
@@ -22,7 +22,7 @@ pragma-consumer = "0.1.0"
 ```
 
 
-### 2. Initialize the Consumer in your code:
+### 2. Initialize the Consumer in your code:
 
 ```rust
 let consumer = PragmaConsumerBuilder::new()
