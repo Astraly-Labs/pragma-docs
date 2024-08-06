@@ -17,8 +17,11 @@ A Merkle Feed is an efficient way to publish and verify large amounts of data on
 
 ## How It Works
 
-*[Placeholder for an image explaining the Merkle Feed architecture]*
+  <div>
+  <img width="100%" height="100%" src="https://i.ibb.co/rMqVJh7/merkle-feeds.jpg" />
+  </div>
 
-1. Merkle roots are pushed on-chain by Pragma *every* block. The merkle trees are built with data from [Deribit](https://www.deribit.com/) the leading platform for options trading.
-2. Data and merkle proofs can be retrieved through REST and WebSocket endpoints or through a rust crate we provide.
-3. Data is updated on-demand on-chain upon successful verification of the merkle proof.
+1. The merkle trees are built with data from [Deribit](https://www.deribit.com/) the leading platform for options trading.
+2. Merkle root is published on-chain *every* block.
+3. Merkle proofs with associated data can be retrieved through REST and WebSocket endpoints or through a rust crate we provide.
+4. Data is updated on-demand on-chain upon successful verification of the merkle proof.
