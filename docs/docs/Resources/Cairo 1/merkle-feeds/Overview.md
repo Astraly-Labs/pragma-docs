@@ -18,7 +18,7 @@ A Merkle Feed is an efficient way to publish and verify large amounts of data on
 ## How It Works
 
   <div>
-  <img width="100%" height="100%" src="https://i.ibb.co/rMqVJh7/merkle-feeds.jpg" />
+  <img width="100%" height="100%" src="https://i.ibb.co/X7X9hHX/Flowchart-1.png" />
   </div>
 
 1. The merkle trees are built with data from [Deribit](https://www.deribit.com/) the leading platform for options trading.
