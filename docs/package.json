@@ -33,6 +33,7 @@
     "clsx": "^1.1.1",
     "docusaurus-plugin-openapi-docs": "^2.2.1",
     "docusaurus-theme-openapi-docs": "^2.2.1",
+    "my-loaders": "file:plugins/my-loaders",
     "hast-util-is-element": "1.1.0",
     "intl-locales-supported": "^1.8.12",
     "react": "^16.8.4",

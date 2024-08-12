@@ -74,6 +74,7 @@ module.exports = {
     ],
   ],
   plugins: [
+    'my-loaders',
     [
       'docusaurus-plugin-openapi-docs',
       {
