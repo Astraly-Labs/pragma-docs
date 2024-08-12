@@ -82,7 +82,7 @@ module.exports = {
         config: {
           petstore: {
             specPath: "./openapi.json",
-            outputDir: "docs/Resources/PragmaApi",
+            outputDir: "docs/Resources/PragmAPI/Reference",
             sidebarOptions: {
               groupPathsBy: "tag",
             },
