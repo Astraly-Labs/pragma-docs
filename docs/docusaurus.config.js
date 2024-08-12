@@ -64,11 +64,30 @@ module.exports = {
       "classic",
       {
         docs: {
-          sidebarPath: "./sidebars.js",
+          path: "docs",
+          routeBasePath: "/",
+          sidebarPath: require.resolve("./sidebars.js"),
           docItemComponent: "@theme/ApiItem", // Derived from docusaurus-theme-openapi
+          // editUrl: 'https://github.com/Astraly-Labs/astraly-docs/tree/main/',
+        },
+        sitemap: {
+          changefreq: "weekly",
+          priority: 0.5,
+          ignorePatterns: ["/tags/**"],
+          filename: "sitemap.xml",
+        },
+        blog: {
+          path: "blog/",
+          blogTitle: "Engineering Blog",
+          blogSidebarCount: 0,
+        },
+        googleAnalytics: {
+          trackingID: "GTM-P83BPCH7",
+          anonymizeIP: true,
         },
         theme: {
-          customCss: "./src/css/custom.css",
+          customCss: require.resolve("./src/css/custom.css"),
+          // customCss2: require.resolve("./src/css/colors.css"),
         },
       },
     ],

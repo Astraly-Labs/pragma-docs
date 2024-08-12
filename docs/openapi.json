@@ -2592,7 +2592,7 @@
       "api_key": {
         "type": "apiKey",
         "in": "header",
-        "name": "pragma_apikey"
+        "name": "x-api-key"
       }
     }
   },
