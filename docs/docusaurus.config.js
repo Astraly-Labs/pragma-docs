@@ -100,12 +100,14 @@ module.exports = {
         id: "api", // plugin id
         docsPluginId: "classic", // configured for preset-classic
         config: {
-          petstore: {
+          pragma: {
             specPath: "./openapi.json",
             outputDir: "docs/Resources/PragmAPI/Reference",
             sidebarOptions: {
               groupPathsBy: "tag",
             },
+            hideSendButton: false,
+            baseUrl: "https://api.dev.pragma.build"
           },
         }
       },
