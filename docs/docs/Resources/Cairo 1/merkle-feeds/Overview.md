@@ -32,5 +32,5 @@ A Merkle Feed is an efficient way to publish and verify large amounts of data on
 We use the same contract as the one used for Realized Volatilty or TWAP.
 You can find it at these addresses:
 
-- Sepolia: [0x015df5075251c103ad1e2b22328e426ad145d2003fc7f80c66c4820649fef1e7](https://sepolia.voyager.online/contract/0x015df5075251c103ad1e2b22328e426ad145d2003fc7f80c66c4820649fef1e7#readContract)
+- Sepolia: [0x0379afb83d2f8e38ab08252750233665a812a24278aacdde52475618edbf879c](https://sepolia.voyager.online/contract/0x0379afb83d2f8e38ab08252750233665a812a24278aacdde52475618edbf879c#readContract)
 - Mainnet: 🔜
