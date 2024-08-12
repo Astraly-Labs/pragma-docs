@@ -12,7 +12,7 @@
     "/node/v1/aggregation/candlestick/{base}/{quote}": {
       "get": {
         "tags": [
-          "handlers::get_ohlc"
+          "crate::handlers::get_ohlc"
         ],
         "operationId": "get_ohlc",
         "parameters": [
@@ -123,7 +123,7 @@
     "/node/v1/data/publish": {
       "post": {
         "tags": [
-          "handlers::create_entry"
+          "crate::handlers::create_entry"
         ],
         "operationId": "create_entries",
         "requestBody": {
@@ -163,7 +163,7 @@
     "/node/v1/data/publish_future": {
       "post": {
         "tags": [
-          "handlers::create_future_entry"
+          "crate::handlers::create_future_entry"
         ],
         "operationId": "create_future_entries",
         "requestBody": {
@@ -203,7 +203,7 @@
     "/node/v1/data/subscribe": {
       "get": {
         "tags": [
-          "handlers::subscribe_to_entry"
+          "crate::handlers::subscribe_to_entry"
         ],
         "operationId": "subscribe_to_entry",
         "responses": {
@@ -226,7 +226,7 @@
     "/node/v1/data/{base}/{quote}": {
       "get": {
         "tags": [
-          "handlers::get_entry"
+          "crate::handlers::get_entry"
         ],
         "operationId": "get_entry",
         "parameters": [
@@ -334,10 +334,53 @@
         }
       }
     },
+    "/node/v1/data/{base}/{quote}/future_expiries": {
+      "get": {
+        "tags": [
+          "crate::handlers::get_expiries"
+        ],
+        "operationId": "get_expiries",
+        "parameters": [
+          {
+            "name": "base",
+            "in": "path",
+            "description": "Base Asset",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "quote",
+            "in": "path",
+            "description": "Quote Asset",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get available future expiries for a pair",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetEntryResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/node/v1/merkle_feeds/options/{instrument}": {
       "get": {
         "tags": [
-          "handlers::merkle_feeds::get_option"
+          "crate::handlers::merkle_feeds::get_option"
         ],
         "operationId": "get_merkle_feeds_option",
         "parameters": [
@@ -397,7 +440,7 @@
     "/node/v1/merkle_feeds/proof/{option_hash}": {
       "get": {
         "tags": [
-          "handlers::merkle_feeds::get_merkle_proof"
+          "crate::handlers::merkle_feeds::get_merkle_proof"
         ],
         "operationId": "get_merkle_feeds_proof",
         "parameters": [
@@ -439,13 +482,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Get the merkle tree",
+            "description": "Get the merkle proof",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/GetMerkleTreeResponse"
+                    "$ref": "#/components/schemas/GetMerkleProofResponse"
                   }
                 }
               }
@@ -457,7 +500,7 @@
     "/node/v1/onchain/checkpoints/{base}/{quote}": {
       "get": {
         "tags": [
-          "handlers::onchain::get_checkpoints"
+          "crate::handlers::onchain::get_checkpoints"
         ],
         "operationId": "get_onchain_checkpoints",
         "parameters": [
@@ -518,7 +561,7 @@
     "/node/v1/onchain/history/{base}/{quote}": {
       "get": {
         "tags": [
-          "handlers::onchain::get_history"
+          "crate::handlers::onchain::get_history"
         ],
         "operationId": "get_onchain_history",
         "parameters": [
@@ -601,7 +644,7 @@
     "/node/v1/onchain/ohlc/subscribe": {
       "get": {
         "tags": [
-          "handlers::onchain::subscribe_to_ohlc"
+          "crate::handlers::onchain::subscribe_to_ohlc"
         ],
         "operationId": "subscribe_to_onchain_ohlc",
         "responses": {
@@ -624,7 +667,7 @@
     "/node/v1/onchain/publishers": {
       "get": {
         "tags": [
-          "handlers::onchain::get_publishers"
+          "crate::handlers::onchain::get_publishers"
         ],
         "operationId": "get_onchain_publishers",
         "parameters": [
@@ -664,7 +707,7 @@
     "/node/v1/onchain/{base}/{quote}": {
       "get": {
         "tags": [
-          "handlers::onchain::get_entry"
+          "crate::handlers::onchain::get_entry"
         ],
         "operationId": "get_onchain_entry",
         "parameters": [
@@ -738,7 +781,7 @@
     "/node/v1/volatility/{quote}/{base}": {
       "get": {
         "tags": [
-          "handlers::get_volatility"
+          "crate::handlers::get_volatility"
         ],
         "operationId": "get_volatility",
         "parameters": [
@@ -935,9 +978,7 @@
           },
           "signature": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FieldElement"
-            }
+            "items": "integer"
           }
         }
       },
@@ -968,9 +1009,7 @@
           },
           "signature": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FieldElement"
-            }
+            "items": "integer"
           }
         }
       },
@@ -986,6 +1025,61 @@
           }
         }
       },
+      "Currency": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "decimals",
+          "is_abstract"
+        ],
+        "properties": {
+          "decimals": "integer",
+          "ethereum_address": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": "string",
+          "is_abstract": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "CurrencyError": {
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": [
+              "InternalServerError"
+            ]
+          },
+          {
+            "type": "object",
+            "required": [
+              "NotFound"
+            ],
+            "properties": {
+              "NotFound": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "InfraError"
+            ],
+            "properties": {
+              "InfraError": {
+                "$ref": "#/components/schemas/InfraError"
+              }
+            }
+          }
+        ]
+      },
       "DataType": {
         "type": "string",
         "enum": [
@@ -997,15 +1091,15 @@
       "Entry": {
         "type": "object",
         "required": [
-          "base",
+          "id",
           "pair_id",
-          "price",
-          "volume"
+          "publisher",
+          "source",
+          "timestamp",
+          "price"
         ],
         "properties": {
-          "base": {
-            "$ref": "#/components/schemas/BaseEntry"
-          },
+          "id": "string",
           "pair_id": {
             "type": "string"
           },
@@ -1013,8 +1107,19 @@
             "type": "integer",
             "minimum": 0
           },
-          "volume": {
+          "publisher": {
+            "type": "string"
+          },
+          "publisher_signature": {
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "type": "string"
+          },
+          "timestamp": {
             "type": "integer",
+            "format": "int64",
             "minimum": 0
           }
         }
@@ -1062,7 +1167,7 @@
             ],
             "properties": {
               "InvalidSignature": {
-                "$ref": "#/components/schemas/EcdsaVerifyError"
+                "type": "string"
               }
             }
           },
@@ -1179,21 +1284,22 @@
       "FutureEntry": {
         "type": "object",
         "required": [
-          "base",
+          "id",
           "pair_id",
-          "price",
-          "volume",
-          "expiration_timestamp"
+          "publisher",
+          "source",
+          "timestamp",
+          "publisher_signature",
+          "price"
         ],
         "properties": {
-          "base": {
-            "$ref": "#/components/schemas/BaseEntry"
-          },
           "expiration_timestamp": {
             "type": "integer",
             "format": "int64",
+            "nullable": true,
             "minimum": 0
           },
+          "id": "string",
           "pair_id": {
             "type": "string"
           },
@@ -1201,8 +1307,18 @@
             "type": "integer",
             "minimum": 0
           },
-          "volume": {
+          "publisher": {
+            "type": "string"
+          },
+          "publisher_signature": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "timestamp": {
             "type": "integer",
+            "format": "int64",
             "minimum": 0
           }
         }
@@ -1245,7 +1361,9 @@
           "timestamp": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/UnixTimestamp"
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0
               }
             ],
             "nullable": true
@@ -1637,7 +1755,7 @@
             ],
             "properties": {
               "NonZeroU32Conversion": {
-                "$ref": "#/components/schemas/TryFromIntError"
+                "type": "string"
               }
             }
           },
@@ -1648,11 +1766,38 @@
             ],
             "properties": {
               "AxumError": {
-                "$ref": "#/components/schemas/axum.Error"
+                "type": "string"
               }
             }
           }
         ]
+      },
+      "Instrument": {
+        "type": "object",
+        "description": "An instrument.",
+        "required": [
+          "base_currency",
+          "expiration_date",
+          "strike_price",
+          "option_type"
+        ],
+        "properties": {
+          "base_currency": {
+            "$ref": "#/components/schemas/OptionCurrency"
+          },
+          "expiration_date": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "option_type": {
+            "type": "string",
+            "enum": [
+              "C",
+              "P"
+            ]
+          },
+          "strike_price": "integer"
+        }
       },
       "Interval": {
         "type": "string",
@@ -1663,6 +1808,91 @@
           "2h",
           "1d",
           "1w"
+        ]
+      },
+      "MerkleFeedError": {
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": [
+              "InternalServerError"
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "RedisConnection"
+            ]
+          },
+          {
+            "type": "object",
+            "required": [
+              "OptionNotFound"
+            ],
+            "properties": {
+              "OptionNotFound": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                },
+                "description": "",
+                "maxItems": 2,
+                "minItems": 2
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "MerkleTreeNotFound"
+            ],
+            "properties": {
+              "MerkleTreeNotFound": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "InvalidOptionHash"
+            ],
+            "properties": {
+              "InvalidOptionHash": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "string",
+            "enum": [
+              "TreeDeserialization"
+            ]
+          },
+          {
+            "type": "object",
+            "required": [
+              "MerkleProof"
+            ],
+            "properties": {
+              "MerkleProof": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "NoBlocks"
+            ],
+            "properties": {
+              "NoBlocks": {
+                "type": "string"
+              }
+            }
+          }
         ]
       },
       "MerkleProof": {
@@ -1689,21 +1919,11 @@
           "close"
         ],
         "properties": {
-          "close": {
-            "$ref": "#/components/schemas/BigDecimal"
-          },
-          "high": {
-            "$ref": "#/components/schemas/BigDecimal"
-          },
-          "low": {
-            "$ref": "#/components/schemas/BigDecimal"
-          },
-          "open": {
-            "$ref": "#/components/schemas/BigDecimal"
-          },
-          "time": {
-            "$ref": "#/components/schemas/NaiveDateTime"
-          }
+          "close": "integer",
+          "high": "integer",
+          "low": "integer",
+          "open": "integer",
+          "time": "string"
         }
       },
       "OnchainEntry": {
@@ -1735,6 +1955,14 @@
           }
         }
       },
+      "OptionCurrency": {
+        "type": "string",
+        "description": "The available currencies supported.",
+        "enum": [
+          "BTC",
+          "ETH"
+        ]
+      },
       "OptionData": {
         "type": "object",
         "description": "An instrument option with its mark price for a certain timestamp.",
@@ -1755,9 +1983,7 @@
           "instrument_name": {
             "type": "string"
           },
-          "mark_price": {
-            "$ref": "#/components/schemas/BigDecimal"
-          }
+          "mark_price": "integer"
         }
       },
       "PerpEntry": {
@@ -1788,51 +2014,28 @@
       "Publisher": {
         "type": "object",
         "required": [
-          "publisher",
-          "website_url",
-          "last_updated_timestamp",
-          "type",
-          "nb_feeds",
-          "daily_updates",
-          "total_updates",
-          "components"
+          "id",
+          "name",
+          "master_key",
+          "active_key",
+          "account_address",
+          "active"
         ],
         "properties": {
-          "components": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PublisherEntry"
-            }
-          },
-          "daily_updates": {
-            "type": "integer",
-            "format": "int32",
-            "minimum": 0
-          },
-          "last_updated_timestamp": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "nb_feeds": {
-            "type": "integer",
-            "format": "int32",
-            "minimum": 0
-          },
-          "publisher": {
+          "account_address": {
             "type": "string"
           },
-          "total_updates": {
-            "type": "integer",
-            "format": "int32",
-            "minimum": 0
+          "active": {
+            "type": "boolean"
           },
-          "type": {
-            "type": "integer",
-            "format": "int32",
-            "minimum": 0
+          "active_key": {
+            "type": "string"
           },
-          "website_url": {
+          "id": "string",
+          "master_key": {
+            "type": "string"
+          },
+          "name": {
             "type": "string"
           }
         }
@@ -1923,6 +2126,80 @@
           }
         ]
       },
+      "RedisError": {
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": [
+              "InternalServerError"
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "Connection"
+            ]
+          },
+          {
+            "type": "object",
+            "required": [
+              "OptionNotFound"
+            ],
+            "properties": {
+              "OptionNotFound": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                },
+                "description": "",
+                "maxItems": 2,
+                "minItems": 2
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "MerkleTreeNotFound"
+            ],
+            "properties": {
+              "MerkleTreeNotFound": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "InvalidOptionHash"
+            ],
+            "properties": {
+              "InvalidOptionHash": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "string",
+            "enum": [
+              "TreeDeserialization"
+            ]
+          },
+          {
+            "type": "object",
+            "required": [
+              "NoBlocks"
+            ],
+            "properties": {
+              "NoBlocks": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
       "SignedPublisherPrice": {
         "type": "object",
         "required": [
@@ -1964,12 +2241,351 @@
             }
           },
           "timestamp": {
-            "$ref": "#/components/schemas/UnixTimestamp"
+            "type": "string"
           }
         }
       },
       "TimestampRange": {
-        "$ref": "#/components/schemas/RangeInclusive"
+        "type": "string"
+      },
+      "VolatilityError": {
+        "oneOf": [
+          { 
+            "type": "object",
+            "required": [
+              "InvalidTimestampsRange"
+            ],
+            "properties": {
+              "InvalidTimestampsRange": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0
+                },
+                "description": "",
+                "maxItems": 2,
+                "minItems": 2
+              }
+            }
+          }
+        ]
+      }
+    },
+    "responses": {
+      "CreateEntryResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "number_entries_created"
+              ],
+              "properties": {
+                "number_entries_created": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateFutureEntryResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "number_entries_created"
+              ],
+              "properties": {
+                "number_entries_created": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetEntryResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "num_sources_aggregated",
+                "pair_id",
+                "price",
+                "timestamp",
+                "decimals"
+              ],
+              "properties": {
+                "decimals": {
+                  "type": "integer",
+                  "format": "int32",
+                  "minimum": 0
+                },
+                "num_sources_aggregated": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "pair_id": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                },
+                "timestamp": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetMerkleProofResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MerkleProof"
+            }
+          }
+        }
+      },
+      "GetOHLCResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "pair_id",
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OHLCEntry"
+                  }
+                },
+                "pair_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetOnchainCheckpointsResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Checkpoint"
+              }
+            }
+          }
+        }
+      },
+      "GetOnchainEntryResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "pair_id",
+                "last_updated_timestamp",
+                "price",
+                "decimals",
+                "nb_sources_aggregated",
+                "asset_type",
+                "variations"
+              ],
+              "properties": {
+                "asset_type": {
+                  "type": "string"
+                },
+                "components": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OnchainEntry"
+                  },
+                  "nullable": true
+                },
+                "decimals": {
+                  "type": "integer",
+                  "format": "int32",
+                  "minimum": 0
+                },
+                "last_updated_timestamp": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0
+                },
+                "nb_sources_aggregated": {
+                  "type": "integer",
+                  "format": "int32",
+                  "minimum": 0
+                },
+                "pair_id": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                },
+                "variations": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number",
+                    "format": "float"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetOnchainHistoryResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GetOnchainHistoryEntry"
+              }
+            }
+          }
+        }
+      },
+      "GetOnchainOHLCResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "pair_id",
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OHLCEntry"
+                  }
+                },
+                "pair_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetOnchainPublishersResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Publisher"
+              }
+            }
+          }
+        }
+      },
+      "GetOptionResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/OptionData"
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "hash"
+                  ],
+                  "properties": {
+                    "hash": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "GetVolatilityResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "pair_id",
+                "volatility",
+                "decimals"
+              ],
+              "properties": {
+                "decimals": {
+                  "type": "integer",
+                  "format": "int32",
+                  "minimum": 0
+                },
+                "pair_id": {
+                  "type": "string"
+                },
+                "volatility": {
+                  "type": "number",
+                  "format": "double"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SubscribeToEntryResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "oracle_prices",
+                "timestamp"
+              ],
+              "properties": {
+                "oracle_prices": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetOraclePrice"
+                  }
+                },
+                "timestamp": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "securitySchemes": {
