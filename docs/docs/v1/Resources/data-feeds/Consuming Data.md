@@ -115,7 +115,7 @@ After registering a liquidity pool, the system automatically monitors:
 - Total supply of LP tokens
 - Token reserves for both assets in the pool
 
-These values are periodically queried from the pool contract. When you call the `get_data` function with the pool address, the system:
+These values are periodically queried from the pool contract. When you call the `get_data_entries` function with the pool address, the system:
 1. Calculates the median values over the last 30 minutes for both total supply and reserves
 2. Computes the LP token price using these median values
 The formula used to compute the LP price is the following: 
@@ -137,7 +137,7 @@ const KEY :felt252 = 74007855167193582900418703190923661159930843258758696537990
 
 fn get_lp_price(oracle_address: ContractAddress, asset : DataType) -> u128  {
     let oracle_dispatcher = IPragmaABIDispatcher{contract_address : oracle_address};
-    let output : PragmaPricesResponse= oracle_dispatcher.get_data(asset, AggregationMode::Median(()));
+    let output : PragmaPricesResponse= oracle_dispatcher.get_data_entries(asset).get(0);
 
     return output.price;
 }
