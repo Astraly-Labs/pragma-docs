@@ -1,7 +1,7 @@
 ---
 id: risks
 title: Risks
-sidebar_position: 5
+sidebar_position: 4
 ---
 
 ---
