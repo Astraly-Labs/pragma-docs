@@ -104,6 +104,50 @@ let expiration_timestamp = 1691395615; //in seconds
 let price = get_asset_price_median(oracle_address, DataType::FutureEntry((KEY, expiration_timestamp)));
 ```
 
+
+#### LP Price
+
+:::info Recently Added
+This feature was added in the latest release
+:::
+
+After registering a liquidity pool, the system automatically monitors:
+- Total supply of LP tokens
+- Token reserves for both assets in the pool
+
+These values are periodically queried from the pool contract. When you call the `get_data_entries` function with the pool address, the system:
+1. Calculates the median values over the last 30 minutes for both total supply and reserves
+2. Computes the LP token price using these median values
+The formula used to compute the LP price is the following: 
+
+<div>
+  <img width="100%" height="100%" src="/img/flowchart/LP_price_formula.webp" alt="flowchart contracts" />
+</div>
+
+Below is an simple code snippet which details the process to retrieve a LP price for a given registered pool contract.
+
+
+```rust
+use pragma_lib::abi::{IPragmaABIDispatcher, IPragmaABIDispatcherTrait};
+use pragma_lib::types::{AggregationMode, DataType, PragmaPricesResponse};
+use starknet::ContractAddress;
+use starknet::contract_address::contract_address_const;
+
+const KEY :felt252 = 740078551671935829004187031909236611599308432587586965379905724271919270269; // felt252 conversion of a given pool address. The pool must be registered first.
+
+fn get_lp_price(oracle_address: ContractAddress, asset : DataType) -> u128  {
+    let oracle_dispatcher = IPragmaABIDispatcher{contract_address : oracle_address};
+    let output : PragmaPricesResponse= oracle_dispatcher.get_data_entries(asset).get(0);
+
+    return output.price;
+}
+
+//USAGE
+let oracle_address : ContractAddress = contract_address_const::<0x06df335982dddce41008e4c03f2546fa27276567b5274c7d0c1262f3c2b5d167>();
+let price = get_lp_price(oracle_address, DataType::GenericEntry(KEY));
+```
+
+
 ## Technical Specification
 
 ### Function: `get_data_median`
