@@ -13,6 +13,15 @@ This feature was added in the latest release
 
 In partnership with 🌹 [Nostra](https://nostra.finance/), we recently launched new pricers for liquidity pools.
 
+## Supported Pools
+
+| Name      | Address                                                            | Decimals | Mainnet | Type  | Risk |
+| --------- | ------------------------------------------------------------------ | -------- | ------- | ----- | ---- |
+| USDC/USDT | 0x00c318445d5a5096e2ad086452d5c97f65a9d28cafe343345e0fa70da0841295 | 18       | ✅       | Degen | L    |
+| STRK/ETH  | 0x01a2de9f2895ac4e6cb80c11ecc07ce8062a4ae883f64cb2b1dc6724b85e897d | 18       | ✅       | Degen | L    |
+| STRK/USDC | 0x042543c7d220465bd3f8f42314b51f4f3a61d58de3770523b281da61dbf27c8a | 18       | ✅       | Degen | L    |
+| ETH/USDC  | 0x05e03162008d76cf645fe53c6c13a7a5fce745e8991c6ffe94400d60e44c210a | 18       | ✅       | Degen | L    |
+| WBTC/ETH  | 0x01583919ffd78e87fa28fdf6b6a805fe3ddf52f754a63721dcd4c258211129a6 | 18       | ✅       | Degen | L    |
 
 ## Pricing
 
@@ -58,13 +67,3 @@ let oracle_address: ContractAddress = contract_address_const::<0x06df335982dddce
 // The price returned is multiplied by 10**pool_decimals
 let price_in_dollars: u256 = get_lp_price(oracle_address, DataType::GenericEntry(POOL_ADDRESS));
 ```
-
-## Supported Pools
-
-| Name      | Address                                                            | Decimals | Mainnet | Type  | Risk |
-| --------- | ------------------------------------------------------------------ | -------- | ------- | ----- | ---- |
-| USDC/USDT | 0x00c318445d5a5096e2ad086452d5c97f65a9d28cafe343345e0fa70da0841295 | 18       | ✅       | Degen | L    |
-| STRK/ETH  | 0x01a2de9f2895ac4e6cb80c11ecc07ce8062a4ae883f64cb2b1dc6724b85e897d | 18       | ✅       | Degen | L    |
-| STRK/USDC | 0x042543c7d220465bd3f8f42314b51f4f3a61d58de3770523b281da61dbf27c8a | 18       | ✅       | Degen | L    |
-| ETH/USDC  | 0x05e03162008d76cf645fe53c6c13a7a5fce745e8991c6ffe94400d60e44c210a | 18       | ✅       | Degen | L    |
-| WBTC/ETH  | 0x01583919ffd78e87fa28fdf6b6a805fe3ddf52f754a63721dcd4c258211129a6 | 18       | ✅       | Degen | L    |
