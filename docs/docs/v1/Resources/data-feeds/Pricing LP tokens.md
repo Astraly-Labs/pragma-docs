@@ -11,7 +11,7 @@ This feature was added in the latest release
 :::
 
 
-**text saying in parternship with nostra we price lp tokens**
+In partnership with 🌹 [Nostra](https://nostra.finance/), we recently launched new pricers for liquidity pools.
 
 
 ## Pricing
