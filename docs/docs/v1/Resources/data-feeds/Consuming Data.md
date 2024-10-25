@@ -105,7 +105,7 @@ let price = get_asset_price_median(oracle_address, DataType::FutureEntry((KEY, e
 ```
 
 
-#### LP Price
+#### LP Price
 
 :::info Recently Added
 This feature was added in the latest release
