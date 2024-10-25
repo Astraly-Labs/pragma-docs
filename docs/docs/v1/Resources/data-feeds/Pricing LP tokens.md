@@ -36,22 +36,26 @@ Below is an simple code snippet which details the process to retrieve a LP price
 
 ```rust
 use pragma_lib::abi::{IPragmaABIDispatcher, IPragmaABIDispatcherTrait};
-use pragma_lib::types::{AggregationMode, DataType, PragmaPricesResponse};
+use pragma_lib::types::{DataType, PossibleEntries};
 use starknet::ContractAddress;
 use starknet::contract_address::contract_address_const;
 
 // felt252 conversion of a given pool address. The pool must be registered first.
 const POOL_ADDRESS: felt252 = 740078551671935829004187031909236611599308432587586965379905724271919270269; 
 
-fn get_lp_price(oracle_address: ContractAddress, asset : DataType) -> u128  {
+fn get_lp_price(oracle_address: ContractAddress, asset: DataType) -> u256 {
     let oracle_dispatcher = IPragmaABIDispatcher{contract_address : oracle_address};
-    let output : PragmaPricesResponse= oracle_dispatcher.get_data_entries(asset).get(0);
-    return output.price;
+    let output: PossibleEntries = oracle_dispatcher.get_data_entries(asset).get(0);
+    let entry: GenericEntry = match output {
+      PossibleEntries::GenericEntry(e) => e,
+      _ => panic_with_felt252(0) // should never happen
+    };
+    return entry.value;
 }
 
 // USAGE
-let oracle_address : ContractAddress = contract_address_const::<0x06df335982dddce41008e4c03f2546fa27276567b5274c7d0c1262f3c2b5d167>();
-let price = get_lp_price(oracle_address, DataType::GenericEntry(POOL_ADDRESS));
+let oracle_address: ContractAddress = contract_address_const::<0x06df335982dddce41008e4c03f2546fa27276567b5274c7d0c1262f3c2b5d167>();
+let price_in_dollars: u256 = get_lp_price(oracle_address, DataType::GenericEntry(POOL_ADDRESS));
 ```
 
 ## Supported Pools
