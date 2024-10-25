@@ -22,7 +22,7 @@ After registering a liquidity pool, the system automatically monitors:
 
 These values are periodically queried from the pool contract. When you call the `get_data_entries` function with the pool address, the system:
 1. Calculates the median values over the last 30 minutes for both total supply and reserves
-2. Computes the LP token price using these median values
+2. Computes the LP token price using these median values. The output price is multiplied by `10**pool_decimals`, where `pool_decimals` is the number of decimals defined in the Pool. 
 The formula used to compute the LP price is the following: 
 
 <div>
@@ -55,6 +55,7 @@ fn get_lp_price(oracle_address: ContractAddress, asset: DataType) -> u256 {
 
 // USAGE
 let oracle_address: ContractAddress = contract_address_const::<0x06df335982dddce41008e4c03f2546fa27276567b5274c7d0c1262f3c2b5d167>();
+// The price returned is multiplied by 10**pool_decimals
 let price_in_dollars: u256 = get_lp_price(oracle_address, DataType::GenericEntry(POOL_ADDRESS));
 ```
 
