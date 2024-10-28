@@ -65,8 +65,8 @@ Once installed, you can use this code snippet for your integration:
 ```solidity
 pragma solidity ^0.8.0;
  
-import "@pragmaoracle/solidity-sdk/IPragma.sol";
-import "@pragmaoracle/solidity-sdk/PragmaStructs.sol";
+import "@pragmaoracle/solidity-sdk/src/interfaces/IPragma.sol";
+import "@pragmaoracle/solidity-sdk/src/interfaces/PragmaStructs.sol";
  
 contract YourContract {
   IPragma oracle;
@@ -88,12 +88,12 @@ contract YourContract {
     // Submit a priceUpdate to the Pragma contract to update the on-chain price.
     // Updating the price requires paying the fee returned by getUpdateFee.
     uint fee = oracle.getUpdateFee(priceUpdate);
-    oracle.updatePriceFeeds{ value: fee }(priceUpdate);
+    oracle.updateDataFeeds{ value: fee }(priceUpdate);
  
     // Read the current price from a price feed if it is less than 60 seconds old.
     // Each price feed (e.g., Spot Median ETH/USD) is identified by a unique identifier id.
-    bytes32 id = ; // ETH/USD
-    PragmaStructs.DataFeed memory data_feed = oracle.getSpotMedianNoOlderThan(id, 60);
+    bytes32 id = bytes32(abi.encodePacked(bytes7(0x4554482f555344))); // ETH/USD packed as 32 bytes
+    SpotMedian memory data_feed = oracle.getSpotMedianNoOlderThan(id, 60);
   }
 
 }
@@ -102,7 +102,7 @@ contract YourContract {
 Let's detail the operations done by the snippet above.
 Firstly we instantiate a `IPragma` interface from the solidity SDK, linked to a Pragma contract, passed in the constructor.  
 Then we call `IPragma.getUpdateFee` to determine the fee charged to update the price.  
-After calling `IPragma.updatePriceFeeds` to update the price, paying the previous fee,  we call `IPragma.getSpotMedianNoOlderThan` to read the current spot median price for the given feed id providing an acceptable staleness for the data to be fetched. 
+After calling `IPragma.updateDataFeeds` to update the price, paying the previous fee,  we call `IPragma.getSpotMedianNoOlderThan` to read the current spot median price for the given feed id providing an acceptable staleness for the data to be fetched. 
 You can find [here](/v2/Price%20Feeds/supported-assets-chains) the list of available feeds. 
 
 
@@ -129,3 +129,5 @@ You can now use various methods to fetch data from the Pragma oracle. Here are t
 -  **getOptionsNoOlderThan**(bytes32 id, uint256 age)
 -  **getPerpNoOlderThan**(bytes32 id, uint256 age)
 
+
+### Build an update calldata
