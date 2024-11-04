@@ -17,7 +17,7 @@ This section outlines the **calldata** format requirements for valid updates. Th
 | Major version             |  uint8            |  1                |
 | Minor version             |  uint8            |  0                |
 | Trailing Header Size      |  uint8            |  0                |
-| Hyperlane message length  |   uint16          |  .length          |
+| Hyperlane message length  |   uint16          |  length          |
 
 Then, comes the **hyperlane message**: 
 
@@ -26,12 +26,11 @@ Then, comes the **hyperlane message**:
 | Hyperlane version         |  uint8            |  1                |
 | Signatures                | Signatures         |   -               |
 | Nonce                      |  uint32           |  -                |
-| Block timestamp           |   uint64          | block.timestamp   |
 | Emitter chain id          |   uint32          | [chain id ](/v2/Price%20Feeds/supported-assets-chains) |
 | Emitter address           | bytes32(starknet address) |  -        |
 | Payload                   | Payload           |       -           |
 
-**Signatures** are packed encoded, starting with a single byte indicating the total number of signatures. Each signature then consists of:
+**Signatures** are packed encoded, starting with a single byte indicating the total number of signatures(uint8). Each signature then consists of:
 
  - one-byte index (mapping the signature to its corresponding validator in the Hyperlane contract)
  - 32-byte r-component
@@ -42,14 +41,17 @@ Finally the **payload**:
 
 | Field                     |  Size             | Recommended value |
 |---------------------------|:-------------------:|:---------------:|
+| Merkle tree hook address  | bytes32           |   -               |
 | Checkpoint root           |  bytes32          |   -               |
+| Checkpoint index          | uint32            |   -               |
+| Message id                | uint256           |  -                |
 | Num updates               |  uint8            |  -                |
-| Update Size               |  uint16           |  .length          |
-| Proof length              |   uint16          |  .length          |
+| Update Size               |  uint16           |  length          |
+| Proof length              |   uint16          |  length          |
 | Proof                     | -                 |  -                |
 | Update data               | UpdateData        | -                 |
 | Feed id                   | bytes32           |   -               | 
-| Block timestamp           | uint64            | block.timestamp   |
+| Publish time              | uint64            |  -            |
 
 **UpdateData** represents the packed encoding `abi.encodePacked` of the desired feed type, which could be SpotMedian, TWAP, Options, Perpetuals, or other supported types.
 For applications, the process of building calldata is simplified; it can be retrieving through the `get_calldata` theoros endpoint. 
