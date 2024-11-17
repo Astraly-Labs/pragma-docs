@@ -162,39 +162,6 @@ To use a custom RPC, you will need to set the `network` constructor argument to 
     )
 ```
 
-#### 3.2. Publish on API
-
-If you're willing to publish on the [Pragma API](https://blog.pragma.build/pragma-empowers-starknet-sequencer-with-the-launch-of-the-api/) aswell, there are 2 simple changes to make :
-
-You will have to specify an `API_KEY` and an `API_URL`.
-Currently the only way to get an API key is for us to give it to you, so please let us know if you need it!
-
-There are 2 environments :
-
-- dev: `https://api.dev.pragma.build/node` (default)
-- prod: `https://api.prod.pragma.build/node`
-
-Then you just need to use the `PragmaAPIClient` instead of the `PragmaOnChainClient`.
-
-```python
-    publisher_client = PragmaAPIClient(
-            account_private_key=("path/to/keystore", keystore_password),
-            account_contract_address=PUBLISHER_ADDRESS,
-            api_url=API_URL, // dev or prod url
-            api_key=API_KEY, // the api key that you received
-        )
-
-    // ... everything else stays the same
-    await publisher_client.publish_entries(_entries)
-```
-
-:::warning
-
-To publish on the API, same as onchain you will need to be whitelisted.
-We have a secure system where you will have a master key and an active publishing key that lets you rotate the active key in case it's compromised.
-
-:::
-
 ### 4. Docker Image
 
 In this setup, a Python script would fetch data (your custom logic) and then use the Pragma SDK to publish that data, similar to the script above. In order to deploy you can use the pragma-publisher Docker base image. The base image is available on [ghcr](https://github.com/astraly-labs/pragma-sdk/pkgs/container/pragma-sdk%2Fpragma-sdk) and comes with the Python and all requirements (including the pragma Python package) installed.
