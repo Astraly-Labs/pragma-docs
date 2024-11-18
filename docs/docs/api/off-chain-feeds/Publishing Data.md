@@ -108,13 +108,13 @@ async def publish_all(pairs: List[Pair]):
     publisher_client = PragmaAPIClient(
         account_private_key=("path/to/keystore", keystore_password),
         account_contract_address=PUBLISHER_ADDRESS,
-        api_url=API_URL, // dev or prod url
-        api_key=API_KEY, // the api key that you received
+        api_url=API_URL, # dev or prod url
+        api_key=API_KEY, # the api key that you received
     )
 
     # Use your own custom logic
     _entries = fetch_entries(pairs)
-    await publisher_client.publish_many(_entries)
+    await publisher_client.publish_entries(_entries)
 
     logger.info("Publishing the following entries:")
     for entry in _entries:
