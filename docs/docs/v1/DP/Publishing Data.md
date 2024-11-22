@@ -185,3 +185,18 @@ Finally just run it with the provided env file `docker run --env-file .env pragm
 If you don't have any data but still want to push data onto the network to increase resiliency of the system.
 You can simply run the `price-pusher` [image](https://github.com/astraly-labs/pragma-sdk/pkgs/container/pragma-sdk%2Fprice-pusher).
 More instructions on this service can be found [here](https://github.com/astraly-labs/pragma-sdk/tree/master/price-pusher)
+
+### Troubleshooting
+
+To display more logs, you can add the following snippet to your script.
+
+```python
+# Configure logging at the start of your script
+logging.basicConfig(
+    level=logging.DEBUG,  # Set to DEBUG to see all debug messages
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+
+# If you want to only see debug logs from the pragma_sdk
+logging.getLogger("pragma_sdk").setLevel(logging.DEBUG)
+```

@@ -147,3 +147,19 @@ You can deploy it as you wish, we support latency as low as 200ms. It will depen
 Also, please follow the list of supported assets as possible.
 
 Thank you for building with Pragma 🧩
+
+
+### Troubleshooting
+
+To display more logs, you can add the following snippet to your script.
+
+```python
+# Configure logging at the start of your script
+logging.basicConfig(
+    level=logging.DEBUG,  # Set to DEBUG to see all debug messages
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+
+# If you want to only see debug logs from the pragma_sdk
+logging.getLogger("pragma_sdk").setLevel(logging.DEBUG)
+```

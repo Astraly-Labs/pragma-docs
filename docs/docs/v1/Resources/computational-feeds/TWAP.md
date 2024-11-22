@@ -8,9 +8,9 @@ sidebar_position: 5
 
 For any price feed, Pragma offers a TWAP feed. The TWAP feed uses checkpoints in order to compute the time weighted average prices. The TWAP feed is useful for protocols that need to calculate the average price of an asset over a period of time. TWAP will be available for both Spot and Futures feeds, for now.
 
-#### Sample Code
+### Sample Code
 
-If you are just trying to get started with our TWAP feed, see this self-contained code snippet here. You can find the full Oracle interface specification is available [here](https://github.com/Astraly-Labs/pragma-oracle/blob/main/src/compute_engines/summary_stats/summary_stats.cairo).
+If you are just trying to get started with our TWAP feed, see this self-contained code snippet here. You can find the full Oracle interface specification is available [here](https://github.com/astraly-labs/pragma-oracle/blob/main/pragma-oracle/src/compute_engines/summary_stats/summary_stats.cairo).
 
 ```rust
 
@@ -23,15 +23,16 @@ use pragma_lib::types::{AggregationMode, DataType};
 const SUMMARY_STATS_ADDRESS : ContractAddress  = 0x00000000000000000000;
 
 fn comupute_twap(data_type : DataType, aggregation_mode : AggregationMode) -> u128 {
-    let start_tick = 1691315416;
+    let start_time = 1691315416;
     let end_tick = 1691415416;
+    let time = end_tick - start_time;
     let num_samples = 200;
     let summary_dispatcher = ISummaryStatsABIDispatcher { contract_address: SUMMARY_STATS_ADDRESS}
     let (twap, decimals) = summary_dispatcher.calculate_twap(
         data_type,
         aggregation_mode,
-        time,
-        start_time,
+        time, // duration
+        start_time, // beginning of the twap
     );
     return twap; // will return the volatility multiplied by 10^decimals
 }
@@ -39,7 +40,7 @@ fn comupute_twap(data_type : DataType, aggregation_mode : AggregationMode) -> u1
 //USAGE
 
 let pair_id : felt252 = "ETH/USD";
-let expiration_timestamp = 1691515416;
+let expiration_timestamp = 0; // PERP
 
 //SPOT
 let twap = compute_twap(DataType::Spot(pair_id), AggregationMode::Median(()));
