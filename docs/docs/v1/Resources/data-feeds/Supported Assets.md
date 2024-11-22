@@ -32,6 +32,7 @@ The `pair_id` is calculated by utf-8 encoding the uppercased string (e.g. `str_t
 | ZEND/USD   | 6504691291565413188      | 8        | ✅      | H    |
 | NSTR/USD   | 5643947469983535940      | 8        | ✅      | H    |
 | EKUBO/USD  | 1278253658919688033092   | 8        | ✅      | H    |
+| BROTHER/USDPLUS  | 344361035359747530676741291142567251   | 18        | ✅      | H    |
 
 ### Future
 
@@ -59,9 +60,16 @@ If you want the price of one asset that Pragma lists in the price of another ass
 
 Abstract currencies are not tracking a specific token but rather a broader concept or fiat currency. E.g. there is a difference between the ETH/USD price in the abstract and the ETH/USDC price that can be had in a specific AMM pool.
 
+:::note
+
+USDPLUS is exactly the same as USD but with 18 decimals to account for assets with very low price such as memecoins.
+
+:::
+
 | Currency | Currency Id | Decimals | Mainnet | Risk |
 | -------- | ----------- | -------- | ------- | ---- |
 | USD      | 5591876     | 8        | ✅      | L    |
+| USDPLUS      | 24016925890467155     | 18        | ✅      | M    |
 | BTC      | 4346947     | 8        | ✅      | L    |
 | EUR      | 4543826     | 8        | ✅      | M    |
 
