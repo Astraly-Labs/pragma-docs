@@ -33,6 +33,7 @@ The `pair_id` is calculated by utf-8 encoding the uppercased string (e.g. `str_t
 | NSTR/USD   | 5643947469983535940      | 8        | ✅      | H    |
 | EKUBO/USD  | 1278253658919688033092   | 8        | ✅      | H    |
 | XSTRK/USD  | 1629317993172502401860   | 8        | ✅      | H    |
+| SSTRK/USD  | 1537084272803954643780   | 8        | ✅      | H    |
 | BROTHER/USDPLUS  | 344361035359747530676741291142567251   | 18        | ✅      | H    |
 
 ### Future
