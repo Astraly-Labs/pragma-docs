@@ -104,6 +104,34 @@ let expiration_timestamp = 1691395615; //in seconds
 let price = get_asset_price_median(oracle_address, DataType::FutureEntry((KEY, expiration_timestamp)));
 ```
 
+## Conversion Rate
+
+For some assets such as liquid staking tokens, it's actually more relevant to use the conversion rate rather than the market price given the liquidity is often poor for these assets.
+
+To use this special aggregation method, the base token first needs to be associated to a vault address which follows the ERC4626 standard.
+
+#### Sample code
+
+```rust
+use pragma_lib::abi::{IPragmaABIDispatcher, IPragmaABIDispatcherTrait};
+use pragma_lib::types::{AggregationMode, DataType, PragmaPricesResponse};
+use starknet::ContractAddress;
+use starknet::contract_address::contract_address_const;
+
+const KEY :felt252 = 18669995996566340; // felt252 conversion of "BTC/USD", can write const KEY : felt252 = 'BTC/USD'
+
+fn get_asset_conversion_rate(oracle_address: ContractAddress, asset : DataType) -> u128  {
+    let oracle_dispatcher = IPragmaABIDispatcher{contract_address : oracle_address};
+    let output : PragmaPricesResponse= oracle_dispatcher.get_data(asset, AggregationMode::ConversionRate);
+
+    return output.price;
+}
+
+//USAGE
+let oracle_address : ContractAddress = contract_address_const::<0x06df335982dddce41008e4c03f2546fa27276567b5274c7d0c1262f3c2b5d167>();
+let price = get_asset_price_median(oracle_address, DataType::SpotEntry((KEY)));
+```
+
 ## Technical Specification
 
 ### Function: `get_data_median`
@@ -150,7 +178,7 @@ Similar to get_data_median except it allows for an additional parameter to speci
 #### Inputs
 
 - `data_type`: enum of the data type you are requesting (See DataType structure). By providing the enum data type, you also provide the pair id (for spot entries), or the pair id and the expiration timestamp (for futures).
-- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use the structure AggregationMode defined in Pragma. Option must currently be set to `MEDIAN` or `MEAN`, . Additional options `VWAP`, `EXPONENTIAL_DECAY` are coming soon.
+- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use the structure AggregationMode defined in Pragma. Option must currently be set to `MEDIAN`, `MEAN` or `CONVERSIONRATE`, . Additional options `VWAP`, `EXPONENTIAL_DECAY` are coming soon.
 
 #### Returns
 
@@ -168,7 +196,7 @@ This function enables you to rebase the price, i.e. use a different base currenc
 
 - `base_currency_id`: felt252 for the base currency (e.g. BTC)
 - `quote_currency_id`: felt252 for the base currency (e.g. ETH)
-- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use constants defined in Pragma. Option must currently be set to `MEDIAN`, `MEAN`. Additional options `TWAP`, `EXPONENTIAL_DECAY` are coming soon.
+- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use constants defined in Pragma. Option must currently be set to `MEDIAN`, `MEAN` or `CONVERSIONRATE`. Additional options `TWAP`, `EXPONENTIAL_DECAY` are coming soon.
 - `typeof` : SimpleDataType, represents an enum of the data type you are requesting. No pair_id /expiration timestamp required on the enum.
 - `expiration_timestamp`: expiration timestamp of the data you are requesting. Only required for futures.
 
@@ -187,7 +215,7 @@ This function enables you to get the price of one currency in terms of another, 
 #### Inputs
 
 - `data_type`: enum of the data type you are requesting (See DataType structure). By providing the enum data type, you also provide the pair id (for spot entries), or the pair id and the expiration timestamp (for futures).
-- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use constants defined in Pragma. Option must currently be set to `MEDIAN`. Additional options `TWAP`, `EXPONENTIAL_DECAY` and `MEAN` are coming soon.
+- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use constants defined in Pragma. Option must currently be set to `MEDIAN`, `MEAN` or `CONVERSIONRATE`. Additional options `TWAP`, `EXPONENTIAL_DECAY` and `MEAN` are coming soon.
 - `sources`: array of sources to aggregate. Requires a Span of felt252.
 
 #### Returns
@@ -246,7 +274,7 @@ This function returns the last checkpoint, i.e. the last snapshot of the oracle 
 
 - `data_type` : enum of the data type you are requesting (See DataType structure). By providing the enum data type, you also provide the pair id (for spot entries), or the pair id and the expiration timestamp (for futures).
 - `timestamp` : The timestamp for which we take the checkpoint prior to it.
-- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use the structure AggregationMode defined in Pragma. Option must currently be set to `MEDIAN` or `MEAN`, . Additional options `VWAP`, `EXPONENTIAL_DECAY` are coming soon.
+- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use the structure AggregationMode defined in Pragma. Option must currently be set to `MEDIAN`, `MEAN` or `CONVERSIONRATE`. Additional options `VWAP`, `EXPONENTIAL_DECAY` are coming soon.
 
 #### Returns
 
@@ -260,7 +288,7 @@ This function returns the index of the latest checkpoint, i.e. the last snapshot
 #### Inputs
 
 - `data_type` : enum of the data type you are requesting (See DataType structure). By providing the enum data type, you also provide the pair id (for spot entries), or the pair id and the expiration timestamp (for futures).
-- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use the structure AggregationMode defined in Pragma. Option must currently be set to `MEDIAN` or `MEAN`, . Additional options `VWAP`, `EXPONENTIAL_DECAY` are coming soon.
+- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use the structure AggregationMode defined in Pragma. Option must currently be set to `MEDIAN`, `MEAN` or `CONVERSIONRATE`. Additional options `VWAP`, `EXPONENTIAL_DECAY` are coming soon.
 
 #### Returns
 
@@ -274,7 +302,7 @@ This function returns the latest checkpoint, i.e. the last snapshot of the oracl
 #### Inputs
 
 - `data_type` : enum of the data type you are requesting (See DataType structure). By providing the enum data type, you also provide the pair id (for spot entries), or the pair id and the expiration timestamp (for futures).
-- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use the structure AggregationMode defined in Pragma. Option must currently be set to `MEDIAN` or `MEAN`, . Additional options `VWAP`, `EXPONENTIAL_DECAY` are coming soon.
+- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use the structure AggregationMode defined in Pragma. Option must currently be set to `MEDIAN`, `MEAN` or `CONVERSIONRATE`. Additional options `VWAP`, `EXPONENTIAL_DECAY` are coming soon.
 
 #### Returns
 
