@@ -70,7 +70,7 @@ Currently, Pragma sets a checkpoint every 5 minutes. If you need more granular d
 - `start_tick`: timestamp at the beginning of the period over which you want to calculate realized volatility
 - `end_tick`: timestamp at the end of the period over which you want to calculate realized volatility. If set to 0, it defaults to the timestamp of the last published block
 - `num_samples`: number of samples on which you want to calculate volatility. Starknet currently limits computation, so there is a max of 200 for this input
-- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use the structure AggregationMode defined in Pragma. Option must currently be set to `MEDIAN` or `MEAN`, . Additional options `VWAP`, `EXPONENTIAL_DECAY` are coming soon.
+- `aggregation_mode`: aggregation mode to use for combining the many data sources available in Pragma. Use the structure AggregationMode defined in Pragma. Option must currently be set to `MEDIAN`, `MEAN` or `CONVERSIONRATE`. Additional options `VWAP`, `EXPONENTIAL_DECAY` are coming soon.
 
 #### Returns
 
