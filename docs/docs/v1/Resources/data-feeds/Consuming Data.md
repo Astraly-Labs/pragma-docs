@@ -17,7 +17,7 @@ The current Pragma addresses are:
 
 ## Sample Code
 
-If you are just trying to get started with our price feeds, see the self-contained code snippets below. If you'd like to use more advanced oracle functions please see the further information below. You can find a full sample data feed consumer contract [here](https://github.com/Astraly-Labs/pragma-hack/tree/master) and the full Oracle interface specification is available [here](https://github.com/Astraly-Labs/pragma-oracle/blob/main/src/oracle/oracle.cairo).
+If you are just trying to get started with our price feeds, see the self-contained code snippets below. If you'd like to use more advanced oracle functions please see the further information below. You can find a full sample data feed consumer contract [here](https://github.com/Astraly-Labs/pragma-hack/tree/master) and the full Oracle interface specification is available [here](https://github.com/astraly-labs/pragma-oracle/blob/main/pragma-oracle/src/oracle/oracle.cairo).
 
 ## (Optional) Add Pragma as a dependency to your scarb/snforge project
 
@@ -118,18 +118,18 @@ use pragma_lib::types::{AggregationMode, DataType, PragmaPricesResponse};
 use starknet::ContractAddress;
 use starknet::contract_address::contract_address_const;
 
-const KEY :felt252 = 18669995996566340; // felt252 conversion of "BTC/USD", can write const KEY : felt252 = 'BTC/USD'
+const KEY :felt252 = 1629317993172502401860; // felt252 conversion of "XSTRK/USD", can write const KEY : felt252 = 'XSTRK/USD'
 
 fn get_asset_conversion_rate(oracle_address: ContractAddress, asset : DataType) -> u128  {
     let oracle_dispatcher = IPragmaABIDispatcher{contract_address : oracle_address};
-    let output : PragmaPricesResponse= oracle_dispatcher.get_data(asset, AggregationMode::ConversionRate);
+    let output : PragmaPricesResponse= oracle_dispatcher.get_data(asset,AggregationMode::ConversionRate);
 
     return output.price;
 }
 
 //USAGE
 let oracle_address : ContractAddress = contract_address_const::<0x06df335982dddce41008e4c03f2546fa27276567b5274c7d0c1262f3c2b5d167>();
-let price = get_asset_price_median(oracle_address, DataType::SpotEntry((KEY)));
+let price = get_asset_conversion_rate(oracle_address, DataType::SpotEntry((KEY)));
 ```
 
 ## Technical Specification
