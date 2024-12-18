@@ -14,19 +14,19 @@ If you are just trying to get started with our TWAP feed, see this self-containe
 
 ```rust
 
-use starknet::ContractAddress;
+use starknet::{ContractAddress, contract_address_const, get_block_timestamp};
 use pragma_lib::abi::{
     ISummaryStatsABIDispatcher, ISummaryStatsABIDispatcherTrait
 };
 use pragma_lib::types::{AggregationMode, DataType};
 
-const SUMMARY_STATS_ADDRESS : ContractAddress  = 0x00000000000000000000;
 
 fn comupute_twap(data_type : DataType, aggregation_mode : AggregationMode) -> u128 {
-    let start_time = 1691315416;
-    let end_tick = 1691415416;
+    let SUMMARY_STATS_ADDRESS: ContractAddress =
+        contract_address_const::<0x6421fdd068d0dc56b7f5edc956833ca0ba66b2d5f9a8fea40932f226668b5c4>();
+    let start_time = 1691315416; // or any wanted start time
+    let end_tick = get_block_timestamp();
     let time = end_tick - start_time;
-    let num_samples = 200;
     let summary_dispatcher = ISummaryStatsABIDispatcher { contract_address: SUMMARY_STATS_ADDRESS}
     let (twap, decimals) = summary_dispatcher.calculate_twap(
         data_type,
@@ -34,7 +34,7 @@ fn comupute_twap(data_type : DataType, aggregation_mode : AggregationMode) -> u1
         time, // duration
         start_time, // beginning of the twap
     );
-    return twap; // will return the volatility multiplied by 10^decimals
+    return twap; // will return the twap multiplied by 10^decimals
 }
 
 //USAGE
@@ -43,9 +43,9 @@ let pair_id : felt252 = "ETH/USD";
 let expiration_timestamp = 0; // PERP
 
 //SPOT
-let twap = compute_twap(DataType::Spot(pair_id), AggregationMode::Median(()));
+let twap = compute_twap(DataType::SpotEntry(pair_id), AggregationMode::Median(()));
 //FUTURES
-let twap = compute_twap(DataType::Future((pair_id, expiration_timestamp)), AggregationMode::Median(()));
+let twap = compute_twap(DataType::FutureEntry((pair_id, expiration_timestamp)), AggregationMode::Median(()));
 
 ```
 

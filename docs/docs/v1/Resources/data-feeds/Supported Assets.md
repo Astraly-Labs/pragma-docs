@@ -75,6 +75,7 @@ USDPLUS is exactly the same as USD but with 18 decimals to account for assets wi
 | USDPLUS      | 24016925890467155     | 18        | ✅      | M    |
 | BTC      | 4346947     | 8        | ✅      | L    |
 | EUR      | 4543826     | 8        | ✅      | M    |
+| FIXEDRESERVED      | 5568670494291182059991831299396     | 18        | ✅      | L    |
 
 ### Concrete Currencies
 
@@ -87,3 +88,39 @@ These are specific tokens that exist as on-chain representations.
 | USDC     | 1431520323  | 6        | 0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8 | 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 | 0x001d5b64feabc8ac7c839753994f469704c6fabdd45c8fe6d26ed57b5eb79057 |
 | USDT     | 1431520340  | 6        | 0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8 | 0xdac17f958d2ee523a2206206994597c13d831ec7 | 0x386e8d061177f19b3b485c20e31137e6f6bc497cc635ccdfcab96fadf5add6a  |
 | DAI      | 4473161     | 18       | 0x001108cdbe5d82737b9057590adaf97d34e74b5452f0628161d237746b6fe69e | 0x6B175474E89094C44Da98b954EedeAC495271d0F | 0x0278f24c3e74cbf7a375ec099df306289beb0605a346277d200b791a7f811a19 |
+
+
+### Fixed Price
+
+We have introduced a fixed price pair `FIXEDRESERVED/USD` for consumers who want to have a fixed rate of 1$.
+Since this price is not directly available through the live data retrieval function (`get_data`), you must retrieve the price using the `calculate_twap` method from the `summary_stats` contract.
+To implement the fixed price, you can use the following Cairo code. The resulting fixed price will have **18 decimals**.
+
+
+```rust
+use starknet::{ContractAddress, contract_address_const};
+use pragma_lib::abi::{
+    ISummaryStatsABIDispatcher, ISummaryStatsABIDispatcherTrait
+};
+use pragma_lib::types::{AggregationMode, DataType};
+
+
+fn get_fixed_price() -> u128 {
+    // Summary stats contract address
+    let SUMMARY_STATS_ADDRESS: ContractAddress = contract_address_const::<0x49eefafae944d07744d07cc72a5bf14728a6fb463c3eae5bca13552f5d455fd>();
+
+    // Pair id 
+    let pair_id = 23917257655180781648846825458055798674244;  // 'FIXEDRESERVED/USD' as felt
+    let start_time = 1734533205; // NOT TO BE MODIFIED, corresponds to the timestamp where we set the checkpoint
+    let end_tick = starknet::get_block_timestamp();
+    let time = end_tick - start_time;
+    let summary_dispatcher = ISummaryStatsABIDispatcher { contract_address: SUMMARY_STATS_ADDRESS å};
+    let (fixed_price, _) = summary_dispatcher.calculate_twap(
+        DataType::SpotEntry(pair_id),
+        AggregationMode::Median,
+        time, // duration
+        start_time, // beginning of the twap
+    );
+    return fixed_price; // Will return the fixed price with 18 decimals
+}
+```

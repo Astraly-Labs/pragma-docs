@@ -46,7 +46,7 @@ fn compute_volatility(data_type: DataType, aggregation_mode: AggregationMode) ->
 let pair_id  = 18669995996566340; //felt252 conversion of "BTC/USD"
 
 //SPOT
-let volatility = compute_volatility(DataType::Spot(pair_id), AggregationMode::Median(()));
+let volatility = compute_volatility(DataType::SpotEntry(pair_id), AggregationMode::Median(()));
 ```
 
 ## How Realized Volatility is Calculated
