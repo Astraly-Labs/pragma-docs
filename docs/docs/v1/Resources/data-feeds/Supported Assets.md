@@ -75,6 +75,7 @@ USDPLUS is exactly the same as USD but with 18 decimals to account for assets wi
 | USDPLUS      | 24016925890467155     | 18        | ✅      | M    |
 | BTC      | 4346947     | 8        | ✅      | L    |
 | EUR      | 4543826     | 8        | ✅      | M    |
+| FIXEDRESERVED      | 5568670494291182059991831299396     | 18        | ✅      | L    |
 
 ### Concrete Currencies
 
@@ -89,11 +90,11 @@ These are specific tokens that exist as on-chain representations.
 | DAI      | 4473161     | 18       | 0x001108cdbe5d82737b9057590adaf97d34e74b5452f0628161d237746b6fe69e | 0x6B175474E89094C44Da98b954EedeAC495271d0F | 0x0278f24c3e74cbf7a375ec099df306289beb0605a346277d200b791a7f811a19 |
 
 
-### Fixed Currency
+### Fixed Price
 
-Fixed Currency
-A fixed currency is a currency set to exactly one dollar ($1). Since this price is not directly available through the live data retrieval function (`get_data`), you must retrieve the price using the `calculate_twap` method from the `summary_stats` contract.
-To implement the fixed price, you can use the following Cairo code. The resulting fixed price will have **18 decimal** places:
+We have introduced a fixed price pair `FIXEDRESERVED/USD` for consumers who want to have a fixed rate of 1$.
+Since this price is not directly available through the live data retrieval function (`get_data`), you must retrieve the price using the `calculate_twap` method from the `summary_stats` contract.
+To implement the fixed price, you can use the following Cairo code. The resulting fixed price will have **18 decimals**.
 
 
 ```rust
@@ -113,7 +114,7 @@ fn get_fixed_price() -> u128 {
     let start_time = 1734533205; // NOT TO BE MODIFIED, corresponds to the timestamp where we set the checkpoint
     let end_tick = starknet::get_block_timestamp();
     let time = end_tick - start_time;
-    let summary_dispatcher = ISummaryStatsABIDispatcher { contract_address: SUMMARY_STATS_ADDRESS};
+    let summary_dispatcher = ISummaryStatsABIDispatcher { contract_address: SUMMARY_STATS_ADDRESS å};
     let (fixed_price, _) = summary_dispatcher.calculate_twap(
         DataType::SpotEntry(pair_id),
         AggregationMode::Median,
