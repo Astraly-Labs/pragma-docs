@@ -22,6 +22,13 @@ You can find Pragma's first implementation of the Optimistic Oracle on Starknet 
 
 Our Optimistic Oracle works by making a truth claim about the world, stating that something has happened or is true. Once asserted, the assertion enters a challenge period during which someone can dispute it. If no one disputes it during the challenge window, the statement is taken as true. In case of a dispute, the data verification mechanism intervenes.
 
+The first iteration of the optimistic oracle is deployed on the following addresses:
+
+| Network          | Address                                                           | Explorer                                                                                                                                                                                                                                               |
+| ---------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+ Starknet Sepolia | 0x44ac84b04789b0a2afcdd2eb914f0f9b767a77a95a019ebaadc28d6cacbaeeb | [Starkscan](https://sepolia.starkscan.co/contract/0x44ac84b04789b0a2afcdd2eb914f0f9b767a77a95a019ebaadc28d6cacbaeeb) [Voyager](https://sepolia.voyager.online/contract/0x44ac84b04789b0a2afcdd2eb914f0f9b767a77a95a019ebaadc28d6cacbaeeb#accountCalls) |
+
+
 ### General Process
 
 #### Step 1: Assertion Submission
