@@ -36,7 +36,6 @@ mod HackTemplate {
             IPragmaABIDispatcher, IPragmaABIDispatcherTrait, ISummaryStatsABIDispatcher,
             ISummaryStatsABIDispatcherTrait};
     use pragma_lib::types::{DataType, AggregationMode, PragmaPricesResponse};
-    use alexandria_math::math::fpow;
     use starknet::get_block_timestamp;
     use option::OptionTrait;
     const ETH_USD: felt252 = 19514442401534788;  //ETH/USD to felt252, can be used as asset_id
@@ -101,7 +100,6 @@ mod HackTemplate {
             IPragmaABIDispatcher, IPragmaABIDispatcherTrait, ISummaryStatsABIDispatcher,
             ISummaryStatsABIDispatcherTrait};
     use pragma_lib::types::{DataType, AggregationMode, PragmaPricesResponse};
-    use alexandria_math::math::fpow;
     use starknet::get_block_timestamp;
     use option::OptionTrait;
     const ETH_USD: felt252 = 19514442401534788;  //ETH/USD to felt252, can be used as asset_id
