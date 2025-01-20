@@ -121,6 +121,6 @@ fn get_fixed_price() -> u128 {
         time, // duration
         start_time, // beginning of the twap
     );
-    return fixed_price; // Will return the fixed price with 18 decimals
+    return fixed_price; // Will return the fixed price with 8 decimals
 }
 ```
