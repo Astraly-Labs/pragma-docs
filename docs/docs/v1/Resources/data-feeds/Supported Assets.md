@@ -94,7 +94,7 @@ These are specific tokens that exist as on-chain representations.
 
 We have introduced a fixed price pair `FIXEDRESERVED/USD` for consumers who want to have a fixed rate of 1$.
 Since this price is not directly available through the live data retrieval function (`get_data`), you must retrieve the price using the `calculate_twap` method from the `summary_stats` contract.
-To implement the fixed price, you can use the following Cairo code. The resulting fixed price will have **18 decimals**.
+To implement the fixed price, you can use the following Cairo code. The resulting fixed price will have **8 decimals**.
 
 
 ```rust
@@ -111,16 +111,16 @@ fn get_fixed_price() -> u128 {
 
     // Pair id 
     let pair_id = 23917257655180781648846825458055798674244;  // 'FIXEDRESERVED/USD' as felt
-    let start_time = 1734533205; // NOT TO BE MODIFIED, corresponds to the timestamp where we set the checkpoint
-    let end_tick = starknet::get_block_timestamp();
+    let start_time = 1737393762; // NOT TO BE MODIFIED, corresponds to the timestamp where we set the checkpoint
+    let end_tick = 1737395431;
     let time = end_tick - start_time;
-    let summary_dispatcher = ISummaryStatsABIDispatcher { contract_address: SUMMARY_STATS_ADDRESS å};
+    let summary_dispatcher = ISummaryStatsABIDispatcher { contract_address: SUMMARY_STATS_ADDRESS};
     let (fixed_price, _) = summary_dispatcher.calculate_twap(
         DataType::SpotEntry(pair_id),
         AggregationMode::Median,
         time, // duration
         start_time, // beginning of the twap
     );
-    return fixed_price; // Will return the fixed price with 18 decimals
+    return fixed_price; // Will return the fixed price with 8 decimals
 }
 ```
