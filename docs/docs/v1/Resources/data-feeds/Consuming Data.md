@@ -132,6 +132,35 @@ let oracle_address : ContractAddress = contract_address_const::<0x06df335982dddc
 let price = get_asset_conversion_rate(oracle_address, DataType::SpotEntry((KEY)));
 ```
 
+Alternatively, we implemented a specialized conversion rate feed that automatically calculates the conversion rate for specific feeds. Calling these feeds follows a process similar to retrieving spot BTC/USD prices.
+
+**Supported feeds:**
+
+| Pair     | Pair Id             | Decimals | 
+| -------- | ------------------- | -------- | 
+| CONVERSION_XSTR/USD  | 384270964630611589151504336040175440891848512324   | 8        |
+| CONVERSION_SSTRK/USD  | 384270964630611589151504335947941720523300754244   | 8        | 
+
+
+```rust
+use pragma_lib::abi::{IPragmaABIDispatcher, IPragmaABIDispatcherTrait};
+use pragma_lib::types::{AggregationMode, DataType, PragmaPricesResponse};
+use starknet::ContractAddress;
+use starknet::contract_address::contract_address_const;
+
+const KEY :felt252 = 384270964630611589151504336040175440891848512324; // felt252 conversion of "CONVERSION_XSTRK/USD", can write const KEY : felt252 = 'CONVERSION_XSTRK/USD'
+
+fn get_asset_conversion_rate(oracle_address: ContractAddress, asset : DataType) -> u128  {
+    let oracle_dispatcher = IPragmaABIDispatcher{contract_address : oracle_address};
+    let output : PragmaPricesResponse= oracle_dispatcher.get_data(asset,AggregationMode::Median);
+
+    return output.price;
+}
+
+//USAGE
+let oracle_address : ContractAddress = contract_address_const::<0x06df335982dddce41008e4c03f2546fa27276567b5274c7d0c1262f3c2b5d167>();
+let price = get_asset_conversion_rate(oracle_address, DataType::SpotEntry((KEY)));
+```
 ## Technical Specification
 
 ### Function: `get_data_median`
