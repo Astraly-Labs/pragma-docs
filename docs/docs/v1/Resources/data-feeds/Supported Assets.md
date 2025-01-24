@@ -124,3 +124,21 @@ fn get_fixed_price() -> u128 {
     return fixed_price; // Will return the fixed price with 8 decimals
 }
 ```
+
+Alternatively, you can just query `get_data` like detailed below. 
+
+```rust
+
+use pragma_lib::abi::{IPragmaABIDispatcher, IPragmaABIDispatcherTrait};
+use pragma_lib::types::{AggregationMode, DataType, PragmaPricesResponse};
+use starknet::ContractAddress;
+use starknet::contract_address::contract_address_const;
+
+
+const KEY :felt252 = 23917257655180781648846825458055798674244; // felt252 conversion of "FIXEDRESERVED/USD", can also write const KEY : felt252 = 'FIXEDRESERVED/USD';
+
+fn get_asset_price_median(oracle_address: ContractAddress, asset : DataType) -> u128  {
+    let oracle_dispatcher = IPragmaABIDispatcher{contract_address : oracle_address};
+    let output : PragmaPricesResponse= oracle_dispatcher.get_data(asset, AggregationMode::Median(()));
+    return output.price;
+}
