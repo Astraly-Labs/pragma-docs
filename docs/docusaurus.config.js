@@ -41,12 +41,6 @@ module.exports = {
           className: "persistent",
         },
         {
-          to: "/v2/overview",
-          label: "Pragma v2",
-          position: "left",
-          className: "persistent",
-        },
-        {
           to: "/api/overview",
           label: "API",
           position: "left",

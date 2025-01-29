@@ -14,11 +14,7 @@ We are actively working on building out functionality to pull data (e.g. Uniswap
 
 ## Further Audits
 
-Pragma Network has already been audited by leading security research firm [Zellic](https://www.zellic.io/) and [Nethermind](https://nethermind.io).
-
-## Pragma v2
-
-We're currently working a lot on Pragma v2, the second version of our oracle. Pragma v2 is an oracle-chain built on [Madara](https://github.com/keep-starknet-strange/madara), and leveraging [SHARP](https://starkware.co/resource/joining-forces-sharp/). It is live on testnet, and the mainnet will follow by the end of the year, don't hesitate to reach out if you want early access to test it out.
+Pragma has already been audited by leading security research firm [Zellic](https://www.zellic.io/) and [Nethermind](https://nethermind.io).
 
 ## Delivering Traditional Finance-Grade Data to DeFi
 
